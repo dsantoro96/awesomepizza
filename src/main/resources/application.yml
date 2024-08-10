@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: awesomepizza
+  data:
+    mongodb:
+      uri: mongodb://root:admin@localhost:27017
+      database: awesomepizza

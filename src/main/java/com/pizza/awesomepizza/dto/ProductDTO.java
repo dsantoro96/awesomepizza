@@ -33,4 +33,6 @@ public class ProductDTO {
     @NotNull
     private ProductCategory category;
 
+    private Integer quantity;
+
 }

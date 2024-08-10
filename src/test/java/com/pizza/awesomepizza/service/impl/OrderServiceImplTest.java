@@ -1,6 +1,7 @@
 package com.pizza.awesomepizza.service.impl;
 
 import com.pizza.awesomepizza.AwesomePizzaApplication;
+import com.pizza.awesomepizza.dto.OrderDetailDTO;
 import com.pizza.awesomepizza.enumeration.OrderStatus;
 import com.pizza.awesomepizza.enumeration.ProductCategory;
 import com.pizza.awesomepizza.exceptions.BadRequestException;
@@ -23,6 +24,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -95,7 +97,10 @@ class OrderServiceImplTest {
     public void createOrder() {
         Order order = new Order();
 
-        order.setProducts(List.of(product1, product2));
+        order.setProducts(Map.of(
+                product1.getId(), 1,
+                product2.getId(), 2
+        ));
 
         Order created = assertDoesNotThrow(() -> orderService.createOrder(order));
 
@@ -117,8 +122,9 @@ class OrderServiceImplTest {
     @Test
     @org.junit.jupiter.api.Order(3)
     public void getOrderByCode() {
-        Order fetched = assertDoesNotThrow(() -> orderService.getOrderByCode(orderCode));
+        OrderDetailDTO fetched = assertDoesNotThrow(() -> orderService.getOrderByCode(orderCode));
         assertNotNull(fetched);
+        assertEquals(product1.getPrice() + (product2.getPrice() * 2), fetched.getTotalPrice());
 
         assertThrows(NotFoundException.class, () -> orderService.getOrderByCode("somethingWrong"));
     }
@@ -127,20 +133,23 @@ class OrderServiceImplTest {
     @org.junit.jupiter.api.Order(4)
     public void updateOrder() {
         Order order = new Order();
-        order.setProducts(List.of(product1));
+        order.setProducts(Map.of(
+                product1.getId(), 1
+        ));
 
         Order updated = assertDoesNotThrow(() -> orderService.updateOrder(orderCode, order));
 
         assertEquals(order.getProducts().size(), updated.getProducts().size());
         assertEquals(1, order.getProducts().size());
-        assertEquals(product1.getName(), order.getProducts().getFirst().getName());
     }
 
     @Test
     @org.junit.jupiter.api.Order(5)
     public void updateOrderInProgress() {
         Order order = new Order();
-        order.setProducts(List.of(product1));
+        order.setProducts(Map.of(
+                product1.getId(), 1
+        ));
 
         order = orderService.createOrder(order);
 
@@ -171,7 +180,7 @@ class OrderServiceImplTest {
     @Test
     @org.junit.jupiter.api.Order(7)
     public void getDailyOrders() {
-        List<Order> orders = assertDoesNotThrow(() -> orderService.getDailyOrders());
+        List<OrderDetailDTO> orders = assertDoesNotThrow(() -> orderService.getDailyOrders());
 
         assertFalse(orders.isEmpty());
         assertEquals(1, orders.stream().filter(order -> order.getCode().equals(orderCode)).count());
@@ -183,13 +192,15 @@ class OrderServiceImplTest {
         assertThrows(BadRequestException.class, () -> orderService.deleteOrder(orderCode));
 
         Order order = new Order();
-        order.setProducts(List.of(product1));
+        order.setProducts(Map.of(
+                product1.getId(), 1
+        ));
 
         Order created = orderService.createOrder(order);
 
         assertDoesNotThrow(() -> orderService.deleteOrder(created.getCode()));
 
-        Order fetched = orderService.getOrderByCode(created.getCode());
+        OrderDetailDTO fetched = orderService.getOrderByCode(created.getCode());
 
         assertEquals(OrderStatus.CANCELLED, fetched.getStatus());
 

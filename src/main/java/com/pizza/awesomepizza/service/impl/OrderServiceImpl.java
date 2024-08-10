@@ -1,9 +1,13 @@
 package com.pizza.awesomepizza.service.impl;
 
 import com.pizza.awesomepizza.components.RandomStringGenerator;
+import com.pizza.awesomepizza.dto.OrderDetailDTO;
+import com.pizza.awesomepizza.dto.ProductDTO;
 import com.pizza.awesomepizza.enumeration.OrderStatus;
 import com.pizza.awesomepizza.exceptions.BadRequestException;
 import com.pizza.awesomepizza.exceptions.NotFoundException;
+import com.pizza.awesomepizza.mapper.OrderDetailMapper;
+import com.pizza.awesomepizza.mapper.ProductMapper;
 import com.pizza.awesomepizza.model.Order;
 import com.pizza.awesomepizza.model.Product;
 import com.pizza.awesomepizza.repository.OrderRepository;
@@ -18,6 +22,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -29,11 +36,12 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
 
+    private final OrderDetailMapper orderDetailMapper;
+    private final ProductMapper productMapper;
+
     @Override
     public Order createOrder(Order order) {
-        List<String> productIds = order.getProducts().stream().map(Product::getId).toList();
-
-        if (productIds.isEmpty() || !productRepository.existsAllByIdIn(productIds)) {
+        if (!productRepository.existsAllByIdIn(order.getProducts().keySet())) {
             throw new BadRequestException("Some of the products in the order are not available.");
         }
 
@@ -48,14 +56,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order getOrderByCode(String code) {
-        return orderRepository.findByCodeAndOrderDateGreaterThan(code, DateUtils.startOfDay())
-                .orElseThrow(NotFoundException::new);
+    public OrderDetailDTO getOrderByCode(String code) {
+        Order order = getDailyOrderByCode(code);
+
+        Map<String, Product> products = getProductMap(List.of(order));
+
+        return getOrderDetail(order, products);
     }
 
     @Override
     public Order updateOrder(String orderCode, Order order) {
-        Order fetched = getOrderByCode(orderCode);
+        Order fetched = getDailyOrderByCode(orderCode);
 
         if (!fetched.getStatus().equals(OrderStatus.PLACED)) {
             throw new BadRequestException("Cannot modify an order that is not in a placed status.");
@@ -68,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order incrementOrderStatus(String orderCode) {
-        Order fetched = getOrderByCode(orderCode);
+        Order fetched = getDailyOrderByCode(orderCode);
 
         OrderStatus status = fetched.getStatus();
 
@@ -86,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteOrder(String orderCode) {
         try {
-            Order order = getOrderByCode(orderCode);
+            Order order = getDailyOrderByCode(orderCode);
 
             if (!order.getStatus().equals(OrderStatus.PLACED)) {
                 throw new BadRequestException("Cannot modify an order that is not in a placed status.");
@@ -101,8 +112,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getDailyOrders() {
-        return orderRepository.findAllByOrderDateGreaterThan(DateUtils.startOfDay());
+    public List<OrderDetailDTO> getDailyOrders() {
+        List<Order> orders = orderRepository.findAllByOrderDateGreaterThan(DateUtils.startOfDay());
+
+        Map<String, Product> products = getProductMap(orders);
+
+        return orders.stream()
+                .map((order) -> getOrderDetail(order, products))
+                .toList();
     }
 
     /**
@@ -132,6 +149,56 @@ public class OrderServiceImpl implements OrderService {
      */
     private OrderStatus getNextOrderStatus(OrderStatus status) {
         return OrderStatus.values()[status.ordinal() + 1];
+    }
+
+    /**
+     * Retrieves an order based on the provided order code.
+     *
+     * @param code the code of the order to retrieve
+     * @return the Order object of the retrieved order
+     */
+    private Order getDailyOrderByCode(String code) {
+        return orderRepository.findByCodeAndOrderDateGreaterThan(code, DateUtils.startOfDay())
+                .orElseThrow(NotFoundException::new);
+    }
+
+    private Map<String, Product> getProductMap(List<Order> orders) {
+        Set<String> productIds = orders.stream()
+                .flatMap(order -> order.getProducts().keySet().stream())
+                .collect(Collectors.toSet());
+
+        return productRepository.findAllById(productIds).stream().collect(Collectors.toMap(
+                Product::getId,
+                product -> product,
+                (existing, replacement) -> replacement
+        ));
+    }
+
+    private OrderDetailDTO getOrderDetail(Order order, Map<String, Product> products) {
+        OrderDetailDTO detail = orderDetailMapper.toDto(order);
+
+        List<ProductDTO> productList = order.getProducts()
+                .entrySet()
+                .stream()
+                .map((entry) -> {
+                    Product product = products.get(entry.getKey());
+
+                    ProductDTO productDTO = productMapper.toDto(product);
+
+                    productDTO.setQuantity(entry.getValue());
+
+                    return productDTO;
+                }).toList();
+
+        double totalPrice = productList.stream()
+                .map(product -> product.getPrice() * product.getQuantity())
+                .reduce(Double::sum)
+                .orElse(0.0);
+
+        detail.setTotalPrice(totalPrice);
+        detail.setProducts(productList);
+
+        return detail;
     }
 
 }

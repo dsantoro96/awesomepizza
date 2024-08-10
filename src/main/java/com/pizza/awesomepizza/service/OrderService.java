@@ -1,5 +1,6 @@
 package com.pizza.awesomepizza.service;
 
+import com.pizza.awesomepizza.dto.OrderDetailDTO;
 import com.pizza.awesomepizza.model.Order;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface OrderService {
      * @param code the code of the order to retrieve
      * @return the Order object of the retrieved order
      */
-    Order getOrderByCode(String code);
+    OrderDetailDTO getOrderByCode(String code);
 
     /**
      * Updates an existing order with the provided details,
@@ -45,6 +46,6 @@ public interface OrderService {
      *
      * @return a list of Order objects for today's orders
      */
-    List<Order> getDailyOrders();
+    List<OrderDetailDTO> getDailyOrders();
 
 }

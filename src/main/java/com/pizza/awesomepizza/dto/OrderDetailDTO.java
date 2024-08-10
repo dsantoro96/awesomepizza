@@ -2,21 +2,18 @@ package com.pizza.awesomepizza.dto;
 
 import com.pizza.awesomepizza.annotation.NullNotBlank;
 import com.pizza.awesomepizza.enumeration.OrderStatus;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDTO {
+public class OrderDetailDTO {
 
     @NullNotBlank
     private String id;
@@ -24,11 +21,12 @@ public class OrderDTO {
     @NullNotBlank
     private String code;
 
-    @NotEmpty
-    private Map<String, @NotNull @Min(1) Integer> products = new HashMap<>();
+    private List<ProductDTO> products = new ArrayList<>();
 
     private OrderStatus status;
 
     private LocalDateTime orderDate;
+
+    private double totalPrice;
 
 }

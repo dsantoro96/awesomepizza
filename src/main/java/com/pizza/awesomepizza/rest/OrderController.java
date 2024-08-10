@@ -1,6 +1,7 @@
 package com.pizza.awesomepizza.rest;
 
 import com.pizza.awesomepizza.dto.OrderDTO;
+import com.pizza.awesomepizza.dto.OrderDetailDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +33,7 @@ public interface OrderController {
      * @return a ResponseEntity containing the OrderDTO of the retrieved order
      */
     @GetMapping("/{orderCode}")
-    ResponseEntity<OrderDTO> getOrder(@PathVariable("orderCode") String orderCode);
+    ResponseEntity<OrderDetailDTO> getOrder(@PathVariable("orderCode") String orderCode);
 
     /**
      * Updates an existing order with the provided details,
@@ -69,6 +70,6 @@ public interface OrderController {
      * @return a ResponseEntity containing a list of OrderDTO for today's orders
      */
     @GetMapping
-    ResponseEntity<List<OrderDTO>> getDailyOrders();
+    ResponseEntity<List<OrderDetailDTO>> getDailyOrders();
 
 }

@@ -1,6 +1,7 @@
 package com.pizza.awesomepizza.rest.impl;
 
 import com.pizza.awesomepizza.dto.OrderDTO;
+import com.pizza.awesomepizza.dto.OrderDetailDTO;
 import com.pizza.awesomepizza.mapper.OrderMapper;
 import com.pizza.awesomepizza.rest.OrderController;
 import com.pizza.awesomepizza.service.OrderService;
@@ -26,8 +27,8 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    public ResponseEntity<OrderDTO> getOrder(@PathVariable("orderCode") String orderCode) {
-        return ResponseEntity.ok(orderMapper.toDto(orderService.getOrderByCode(orderCode)));
+    public ResponseEntity<OrderDetailDTO> getOrder(@PathVariable("orderCode") String orderCode) {
+        return ResponseEntity.ok(orderService.getOrderByCode(orderCode));
     }
 
     @Override
@@ -47,8 +48,8 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    public ResponseEntity<List<OrderDTO>> getDailyOrders() {
-        return ResponseEntity.ok(orderMapper.toDto(orderService.getDailyOrders()));
+    public ResponseEntity<List<OrderDetailDTO>> getDailyOrders() {
+        return ResponseEntity.ok(orderService.getDailyOrders());
     }
 
 }

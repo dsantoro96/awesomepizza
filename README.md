@@ -2,7 +2,7 @@
 
 ___
 
-### Requisiti
+### Prompt
 
 Come pizzeria "Awesome Pizza" voglio creare il mio nuovo portale per gestire gli ordini dei miei clienti.
 Il portale non richiede la registrazione dell'utente per poter ordinare le sue pizze.
@@ -15,3 +15,22 @@ Decidiamo che nella prima iterazione non sarà disponibile un'interfaccia grafic
 Decidiamo di utilizzare il framework Spring e Java (versione a tua scelta).
 
 Opzionale: Decidiamo di progettare anche i test di unità sul codice oggetto di sviluppo.
+
+___
+
+### Requirements
+
+```
+Docker
+JDK 21
+Maven
+```
+
+___
+
+### How to Run
+
+```
+mvn clean package
+./build.sh
+```

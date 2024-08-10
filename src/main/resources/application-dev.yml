@@ -6,5 +6,5 @@ spring:
     name: awesomepizza
   data:
     mongodb:
-      uri: ${SPRING_DATA_MONGODB_URI}
-      database: ${SPRING_DATA_MONGODB_DATABASE}
+      uri: mongodb://root:admin@localhost:27017
+      database: test

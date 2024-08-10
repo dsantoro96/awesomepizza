@@ -1,0 +1,27 @@
+services:
+  awesomepizza-db:
+    image: mongo
+    container_name: awesomepizza_db
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: admin
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - 27017:27017
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok'
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  awesomepizza:
+    image: awesomepizza
+    container_name: awesomepizza
+    depends_on:
+      awesomepizza-db:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://root:admin@awesomepizza-db
+      SPRING_DATA_MONGODB_DATABASE: awesomepizza

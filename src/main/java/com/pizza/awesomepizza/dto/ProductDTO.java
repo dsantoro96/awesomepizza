@@ -22,6 +22,9 @@ public class ProductDTO {
     private String id;
 
     @NotBlank
+    private String fileId;
+
+    @NotBlank
     private String name;
 
     @NotEmpty

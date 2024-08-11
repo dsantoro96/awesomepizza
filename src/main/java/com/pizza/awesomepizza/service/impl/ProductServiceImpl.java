@@ -4,6 +4,7 @@ import com.pizza.awesomepizza.exceptions.ConflictException;
 import com.pizza.awesomepizza.exceptions.NotFoundException;
 import com.pizza.awesomepizza.model.Product;
 import com.pizza.awesomepizza.repository.ProductRepository;
+import com.pizza.awesomepizza.service.FileItemService;
 import com.pizza.awesomepizza.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final FileItemService fileItemService;
 
     @Override
     public Product createProduct(Product product) {
@@ -25,6 +27,8 @@ public class ProductServiceImpl implements ProductService {
         }
 
         product.setId(null);
+
+        fileItemService.markFile(product.getFileId(), false);
 
         return productRepository.save(product);
     }
@@ -47,6 +51,13 @@ public class ProductServiceImpl implements ProductService {
         fetched.setPrice(product.getPrice());
         fetched.setCategory(product.getCategory());
 
+        if (!fetched.getFileId().equals(product.getFileId())) {
+            fileItemService.markFile(product.getFileId(), false);
+            fileItemService.markFile(fetched.getFileId(), true);
+
+            fetched.setFileId(product.getFileId());
+        }
+
         return productRepository.save(fetched);
     }
 
@@ -54,6 +65,8 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(String id) {
         try {
             Product product = getProduct(id);
+
+            fileItemService.markFile(product.getFileId(), true);
 
             productRepository.delete(product);
         } catch (NotFoundException e) {

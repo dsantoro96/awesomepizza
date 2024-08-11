@@ -6,7 +6,7 @@ import com.pizza.awesomepizza.exceptions.NotFoundException;
 import com.pizza.awesomepizza.exceptions.UnsupportedMediaTypeException;
 import com.pizza.awesomepizza.model.FileItem;
 import com.pizza.awesomepizza.repository.FileRepository;
-import com.pizza.awesomepizza.service.FileService;
+import com.pizza.awesomepizza.service.FileItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -25,7 +25,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class FileServiceImpl implements FileService {
+public class FileItemServiceImpl implements FileItemService {
 
     private final FileRepository fileRepository;
     private final GridFsTemplate gridFsTemplate;

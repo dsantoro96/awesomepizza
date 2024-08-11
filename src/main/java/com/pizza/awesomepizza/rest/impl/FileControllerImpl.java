@@ -3,7 +3,7 @@ package com.pizza.awesomepizza.rest.impl;
 import com.pizza.awesomepizza.dto.FileDTO;
 import com.pizza.awesomepizza.mapper.FileMapper;
 import com.pizza.awesomepizza.rest.FileController;
-import com.pizza.awesomepizza.service.FileService;
+import com.pizza.awesomepizza.service.FileItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
@@ -19,17 +19,17 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class FileControllerImpl implements FileController {
 
-    private final FileService fileService;
+    private final FileItemService fileItemService;
     private final FileMapper fileMapper;
 
     @Override
     public ResponseEntity<FileDTO> uploadFile(MultipartFile file) {
-        return ResponseEntity.ok(fileMapper.toDto(fileService.uploadFile(file)));
+        return ResponseEntity.ok(fileMapper.toDto(fileItemService.uploadFile(file)));
     }
 
     @Override
     public ResponseEntity<Resource> downloadFile(String id) throws IOException {
-        GridFsResource resource = fileService.downloadFile(id);
+        GridFsResource resource = fileItemService.downloadFile(id);
 
         return ResponseEntity.ok()
                 .contentLength(resource.contentLength())
@@ -40,12 +40,12 @@ public class FileControllerImpl implements FileController {
 
     @Override
     public ResponseEntity<FileDTO> markFile(String id, boolean temporary) {
-        return ResponseEntity.ok(fileMapper.toDto(fileService.markFile(id, temporary)));
+        return ResponseEntity.ok(fileMapper.toDto(fileItemService.markFile(id, temporary)));
     }
 
     @Override
     public ResponseEntity<Void> deleteTemporaryFiles() {
-        fileService.deleteTemporaryFiles();
+        fileItemService.deleteTemporaryFiles();
 
         return ResponseEntity.ok().build();
     }

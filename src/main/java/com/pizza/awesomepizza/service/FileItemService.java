@@ -4,7 +4,7 @@ import com.pizza.awesomepizza.model.FileItem;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface FileService {
+public interface FileItemService {
 
     FileItem uploadFile(MultipartFile file);
 

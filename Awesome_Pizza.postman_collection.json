@@ -1,0 +1,419 @@
+{
+	"info": {
+		"_postman_id": "50be8688-5c3a-4568-8327-343abae6a640",
+		"name": "Awesome Pizza",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19678830"
+	},
+	"item": [
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"products\": {\r\n        \"66b795d4856aa94d12bbfb62\": 1\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_uri}}/orders",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_uri}}/orders",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order by Code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_uri}}/orders/IEWMSGYAPL",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"orders",
+								"IEWMSGYAPL"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order by Code",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"66b795d9856aa94d12bbfb63\",\r\n    \"code\": \"IEWMSGYAPL\",\r\n    \"products\": {\r\n        \"66b795d4856aa94d12bbfb62\": 3\r\n    },\r\n    \"status\": \"PLACED\",\r\n    \"orderDate\": \"2024-08-10T16:31:21.4768592\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_uri}}/orders/IEWMSGYAPL",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"orders",
+								"IEWMSGYAPL"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Order Status by Code",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{api_uri}}/orders/IEWMSGYAPL/status",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"orders",
+								"IEWMSGYAPL",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Order by Code",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_uri}}/orders/IEWMSGYAPL",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"orders",
+								"IEWMSGYAPL"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fileId\": \"66b876d23f437c5af325f11a\",\r\n    \"name\": \"Pizza Marinara\",\r\n    \"ingredients\": [\r\n        \"Pizza Dough\",\r\n        \"Tomato Sauce\",\r\n        \"Garlic\",\r\n        \"Oregano\",\r\n        \"Olive Oil\"\r\n    ],\r\n    \"category\": \"PIZZAS\",\r\n    \"price\": 3.5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_uri}}/products",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_uri}}/products/66b877023f437c5af325f11b",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"products",
+								"66b877023f437c5af325f11b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"66b877023f437c5af325f11b\",\r\n    \"fileId\": \"66b878063f437c5af325f126\",\r\n    \"name\": \"Pizza Marinara\",\r\n    \"ingredients\": [\r\n        \"Pizza Dough\",\r\n        \"Tomato Sauce\",\r\n        \"Garlic\",\r\n        \"Oregano\",\r\n        \"Olive Oil\"\r\n    ],\r\n    \"price\": 4.0,\r\n    \"category\": \"PIZZAS\",\r\n    \"quantity\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_uri}}/products/66b877023f437c5af325f11b",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"products",
+								"66b877023f437c5af325f11b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_uri}}/products/66b877023f437c5af325f11b",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"products",
+								"66b877023f437c5af325f11b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_uri}}/products",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Enums",
+			"item": [
+				{
+					"name": "Get Order Statuses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_uri}}/enum/OrderStatus",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"enum",
+								"OrderStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_uri}}/enum/ProductCategory",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"enum",
+								"ProductCategory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Files",
+			"item": [
+				{
+					"name": "Upload File",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/D:/Daniele/Desktop/Pizza_Margherita.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_uri}}/files",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"files"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Temporary Files",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_uri}}/files",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"files"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download File",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_uri}}/files/66b85bff90b85237e7a0b165",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"files",
+								"66b85bff90b85237e7a0b165"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mark File as Temporary/Permanent",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "temporary",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_uri}}/files/66b85bff90b85237e7a0b165",
+							"host": [
+								"{{api_uri}}"
+							],
+							"path": [
+								"files",
+								"66b85bff90b85237e7a0b165"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api_uri",
+			"value": "localhost:8080",
+			"type": "string"
+		}
+	]
+}

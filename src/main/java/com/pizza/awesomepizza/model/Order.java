@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-@Document("order")
+@Document("orders")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {

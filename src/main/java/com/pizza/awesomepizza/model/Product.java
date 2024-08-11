@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Document("product")
+@Document("products")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {

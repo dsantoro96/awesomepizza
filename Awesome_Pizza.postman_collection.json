@@ -385,6 +385,41 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Api Docs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_uri}}/v3/api-docs",
+					"host": [
+						"{{api_uri}}"
+					],
+					"path": [
+						"v3",
+						"api-docs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Swagger UI",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_uri}}/swagger-ui.html",
+					"host": [
+						"{{api_uri}}"
+					],
+					"path": [
+						"swagger-ui.html"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [

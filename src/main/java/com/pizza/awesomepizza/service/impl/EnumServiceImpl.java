@@ -25,14 +25,11 @@ public class EnumServiceImpl implements EnumService {
 
     @SuppressWarnings("unchecked")
     private <T extends EnumTemplate<?>> Class<T> getEnumClass(String template) {
-        switch (template) {
-            case "OrderStatus":
-                return (Class<T>) OrderStatus.class;
-            case "ProductCategory":
-                return (Class<T>) ProductCategory.class;
-            default:
-                throw new BadRequestException(String.format("Unknown enum template '%s'", template));
-        }
+        return switch (template) {
+            case "OrderStatus" -> (Class<T>) OrderStatus.class;
+            case "ProductCategory" -> (Class<T>) ProductCategory.class;
+            default -> throw new BadRequestException(String.format("Unknown enum template '%s'", template));
+        };
     }
 
     private <T extends EnumTemplate<?>> List<T> getEnumTemplateConstants(Class<T> clazz) {
